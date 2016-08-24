@@ -1,5 +1,12 @@
-describe('pml.Query', function() {
-	var sampleData = pml.Parser.parse(`{[|]}
+/// <reference path='../typings/globals/jasmine/index.d.ts'/>
+
+import Node from '../Node';
+import Parser from '../Parser';
+import Query from '../Query';
+import Stringer from '../Stringer';
+
+describe('Query', function() {
+	var sampleData = Parser.parse(`{[|]}
 [foo|A]
 [bar|]
 [baz|C]
@@ -14,7 +21,7 @@ describe('pml.Query', function() {
 	[2|]
 ]
 `);
-	var pq = new pml.Query(sampleData);
+	var pq = new Query(sampleData);
 	
 	describe('.prototype.children()', function() {
 		it('Selects child nodes.', function() {
@@ -91,8 +98,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.descendants()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|
 	[b|]
 	[c|]
@@ -118,8 +125,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.parent()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|
 	[b|1]
 	[c|
@@ -136,8 +143,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.parents()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|
 	[b|]
 	[c|
@@ -155,8 +162,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.closest()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|
 	[a|]
 	[b|
@@ -173,8 +180,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.byIndex()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|
 	[b|]
 ]
@@ -185,8 +192,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.first()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|
 	[b|]
 ]
@@ -197,8 +204,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.last()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|
 	[b|]
 ]
@@ -209,8 +216,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.root()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|
 	[b|]
 ]
@@ -221,8 +228,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.previousAll()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|]
 [b|
 	[c|]
@@ -246,8 +253,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.previous()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|]
 [b|
 	[c|]
@@ -271,8 +278,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.previousUntil()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|]
 [b|
 	[c|2]
@@ -293,8 +300,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.nextAll()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|]
 [b|
 	[c|]
@@ -318,8 +325,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.next()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|1]
 [b|
 	[c|]
@@ -343,8 +350,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.nextUntil()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|]
 [b|
 	[c|]
@@ -365,8 +372,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.remove()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|]
 [b|
 	[a|
@@ -416,8 +423,8 @@ describe('pml.Query', function() {
 		});
 	});
 	describe('.prototype.add()', function() {
-		var d: pml.Node;
-		var pq = new pml.Query(d = pml.Parser.parse(`{[|]}
+		var d: Node;
+		var pq = new Query(d = Parser.parse(`{[|]}
 [a|]
 [b|
 	[c|]
@@ -425,10 +432,10 @@ describe('pml.Query', function() {
 ]
 [e|]
 `));
-		var aq = new pml.Query(pml.Parser.parse('{[|]}[foo|bar][baz|]')).children();
+		var aq = new Query(Parser.parse('{[|]}[foo|bar][baz|]')).children();
 		pq.descendants('b').merge(pq.descendants('c')).merge(pq.descendants('e')).add(aq);
 		it('Adds nodes to selected parents.', function() {
-			expect(pml.Stringer.stringify(d)).toEqual(`{[|]}
+			expect(Stringer.stringify(d)).toEqual(`{[|]}
 [a|]
 [b|
 	[c|

@@ -1,8 +1,7 @@
 /.vscode
-/*.js
-/*.d.ts
+/*.ts
 /bower.json
 /node_modules
-/tests/*.js
-/tests/*.d.ts
+/spec
+/tests
 /typings

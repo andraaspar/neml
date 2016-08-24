@@ -1,4 +1,6 @@
-function addNodeToParent(node: pml.Node, parent: pml.Node): void {
+import Node from '../Node';
+
+export function addNodeToParent(node: Node, parent: Node): void {
 	node.parent = parent;
 	var previousSibling = parent.children[parent.children.length - 1];
 	if (previousSibling) {
@@ -10,8 +12,8 @@ function addNodeToParent(node: pml.Node, parent: pml.Node): void {
 	parent.children.push(node);
 }
 
-function createNode(name: string, parent?: pml.Node): pml.Node {
-	var result = new pml.Node();
+export function createNode(name: string, parent?: Node): Node {
+	var result = new Node();
 	result.name = name;
 	if (parent) {
 		addNodeToParent(result, parent);
@@ -20,8 +22,8 @@ function createNode(name: string, parent?: pml.Node): pml.Node {
 	return result;
 }
 
-function createLeaf(name: string, value: string, parent?: pml.Node): pml.Node {
-	var result = new pml.Node();
+export function createLeaf(name: string, value: string, parent?: Node): Node {
+	var result = new Node();
 	result.name = name;
 	result.value = value;
 	if (parent) {

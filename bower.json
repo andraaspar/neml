@@ -1,21 +1,21 @@
 {
-  "name": "pml",
-  "version": "1.2.2",
-  "private": true,
+  "name": "neml",
+  "version": "0.0.1",
+  "description": "No Escape Markup Language",
+  "main": "index.js",
+  "authors": [
+    "András Parditka"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/andraaspar/neml",
   "ignore": [
     "**/.*",
-    "bower_components",
-    "build",
-    "lib",
     "node_modules",
+    "bower_components",
     "test",
-    "Gruntfile.js",
-    "package.json"
+    "tests"
   ],
-  "devDependencies": {
-    "node-d-ts": "andraaspar/node-d-ts#v2"
-  },
   "dependencies": {
-    "illa": "andraaspar/illa#v2.4"
+    "illa": "^4.0.0"
   }
 }

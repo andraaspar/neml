@@ -1,40 +1,48 @@
-describe('pml.Parser', function() {
+/// <reference path='../typings/globals/jasmine/index.d.ts'/>
+
+import {
+	createLeaf,
+	createNode
+} from './NodeHelpers';
+import Parser from '../Parser';
+
+describe('Parser', function() {
 	describe('.parse()', function() {
 		describe('invalid header', function() {
 			it('throws on double delimiter use', function() {
 				expect(function() {
-					pml.Parser.parse('{[|]{');
+					Parser.parse('{[|]{');
 				}).toThrow('1:1: Comment start delimiter clashes with comment end delimiter.');
 				expect(function() {
-					pml.Parser.parse('{[|[}');
+					Parser.parse('{[|[}');
 				}).toThrow('1:2: Node start delimiter clashes with node end delimiter.');
 				expect(function() {
-					pml.Parser.parse('{[}]}');
+					Parser.parse('{[}]}');
 				}).toThrow('1:3: Name end delimiter clashes with comment end delimiter.');
 			});
 			it('throws on whitespace delimiter', function() {
 				expect(function() {
-					pml.Parser.parse('{[|] ');
+					Parser.parse('{[|] ');
 				}).toThrow('1:5: Comment end delimiter is a whitespace or line break character.');
 				expect(function() {
-					pml.Parser.parse('{[|	}');
+					Parser.parse('{[|	}');
 				}).toThrow('1:4: Node end delimiter is a whitespace or line break character.');
 				expect(function() {
-					pml.Parser.parse('{[|\n}');
+					Parser.parse('{[|\n}');
 				}).toThrow('1:4: Node end delimiter is a whitespace or line break character.');
 				expect(function() {
-					pml.Parser.parse('{[|\r}');
+					Parser.parse('{[|\r}');
 				}).toThrow('1:4: Node end delimiter is a whitespace or line break character.');
 				expect(function() {
-					pml.Parser.parse('{[| }');
+					Parser.parse('{[| }');
 				}).toThrow('1:4: Node end delimiter is a whitespace or line break character.');
 			});
 			it('throws on a missing delimiter', function() {
 				expect(function() {
-					pml.Parser.parse('{[|]');
+					Parser.parse('{[|]');
 				}).toThrow('1:5: Comment end delimiter is missing.');
 				expect(function() {
-					pml.Parser.parse('{[');
+					Parser.parse('{[');
 				}).toThrow('1:3: Name end delimiter is missing.');
 			});
 		});
@@ -46,7 +54,7 @@ describe('pml.Parser', function() {
 				createLeaf('foo', '', expected);
 				createLeaf('bar', '', expected);
 				
-				var result = pml.Parser.parse('{[|]}[foo|]Ignored[bar|]');
+				var result = Parser.parse('{[|]}[foo|]Ignored[bar|]');
 				
 				expect(consoleWarnSpy).toHaveBeenCalled();
 				expect(consoleWarnSpy.calls.count()).toEqual(1);
@@ -55,36 +63,36 @@ describe('pml.Parser', function() {
 			});
 			it('throws on missing delimiters', function() {
 				expect(function() {
-					pml.Parser.parse('{[|]}[foo]');
+					Parser.parse('{[|]}[foo]');
 				}).toThrow('1:10: Invalid node end delimiter, expected: name end delimiter.');
 				expect(function() {
-					pml.Parser.parse('{[|]}[foo|');
+					Parser.parse('{[|]}[foo|');
 				}).toThrow('1:10: Missing node end delimiter.');
 				expect(function() {
-					pml.Parser.parse('{[|]}[foo');
+					Parser.parse('{[|]}[foo');
 				}).toThrow('1:9: Missing name end delimiter.');
 				expect(function() {
-					pml.Parser.parse('{[|]}{');
+					Parser.parse('{[|]}{');
 				}).toThrow('1:6: Missing comment end delimiter.');
 			});
 			it('throws on invalid delimiter location', function() {
 				expect(function() {
-					pml.Parser.parse('{[|]}[foo[bar|]|]');
+					Parser.parse('{[|]}[foo[bar|]|]');
 				}).toThrow('1:10: Invalid node start delimiter, expected: name end delimiter.');
 				expect(function() {
-					pml.Parser.parse('{[|]}[foo|bar|baz]');
+					Parser.parse('{[|]}[foo|bar|baz]');
 				}).toThrow('1:14: Invalid name end delimiter in value.');
 				expect(function() {
-					pml.Parser.parse('{[|]}|');
+					Parser.parse('{[|]}|');
 				}).toThrow('1:6: Invalid name end delimiter in value.');
 				expect(function() {
-					pml.Parser.parse('{[|]}]');
+					Parser.parse('{[|]}]');
 				}).toThrow('1:6: Invalid location for node end delimiter.');
 			});
 		});
 		describe('valid pml', function() {
 			it('parses pml', function() {
-				var result = pml.Parser.parse(`«◄•►»
+				var result = Parser.parse(`«◄•►»
 ◄Árvíztűrő tükörfúrógép•Flood-resistant mirror drill►
 ◄•►
 ◄root•

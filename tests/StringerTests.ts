@@ -1,4 +1,13 @@
-describe('pml.Stringer', function() {
+/// <reference path='../typings/globals/jasmine/index.d.ts'/>
+
+import {
+	createLeaf,
+	createNode
+} from './NodeHelpers';
+
+import Stringer from '../Stringer';
+
+describe('Stringer', function() {
 	describe('.stringify()', function() {
 		it('stringifies pml', function() {
 			var data = createNode('');
@@ -11,7 +20,7 @@ describe('pml.Stringer', function() {
 			createLeaf('', 'b', leaf2);
 			createLeaf('leaf-3', 'C', root);
 			
-			var result = pml.Stringer.stringify(data);
+			var result = Stringer.stringify(data);
 			
 			expect(result).toEqual(`{[|]}
 [Árvíztűrő tükörfúrógép|Flood-resistant mirror drill]
@@ -29,21 +38,21 @@ describe('pml.Stringer', function() {
 			var data = createNode('');
 			createLeaf('', '|', data);
 			
-			var result = pml.Stringer.stringify(data);
+			var result = Stringer.stringify(data);
 			expect(result).toEqual('{[\\]}\n[\\|]');
 		});
 		it('finds new comment delimiters when the current is used by the data', function() {
 			var data = createNode('');
 			createLeaf('', '{', data);
 			
-			var result = pml.Stringer.stringify(data);
+			var result = Stringer.stringify(data);
 			expect(result).toEqual('[(|)]\n(|{)');
 		});
 		it('finds new tag delimiters when the current is used by the data', function() {
 			var data = createNode('');
 			createLeaf('', ']', data);
 			
-			var result = pml.Stringer.stringify(data);
+			var result = Stringer.stringify(data);
 			expect(result).toEqual('{(|)}\n(|])');
 		});
 	});
@@ -52,28 +61,28 @@ describe('pml.Stringer', function() {
 			var data = createNode('');
 			createLeaf('', '|', data);
 			
-			var result = new pml.Stringer(['{}', '[]'], ['|', '=']).stringify(data);
+			var result = new Stringer(['{}', '[]'], ['|', '=']).stringify(data);
 			expect(result).toEqual('{[=]}\n[=|]');
 		});
 		it('finds a new name end delimiter even when out of options', function() {
 			var data = createNode('');
 			createLeaf('', '|', data);
 			
-			var result = new pml.Stringer(['{}', '[]'], ['|']).stringify(data);
+			var result = new Stringer(['{}', '[]'], ['|']).stringify(data);
 			expect(result).toEqual('{[¡]}\n[¡|]');
 		});
 		it('finds new comment delimiters when the current is used by the data', function() {
 			var data = createNode('');
 			createLeaf('', '{', data);
 			
-			var result = new pml.Stringer(['{}', '[]', '«»'], ['|']).stringify(data);
+			var result = new Stringer(['{}', '[]', '«»'], ['|']).stringify(data);
 			expect(result).toEqual('[«|»]\n«|{»');
 		});
 		it('finds new tag delimiters when the current is used by the data', function() {
 			var data = createNode('');
 			createLeaf('', ']', data);
 			
-			var result = new pml.Stringer(['{}', '[]', '«»'], ['|']).stringify(data);
+			var result = new Stringer(['{}', '[]', '«»'], ['|']).stringify(data);
 			expect(result).toEqual('{«|»}\n«|]»');
 		});
 	});
