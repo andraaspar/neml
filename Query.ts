@@ -311,18 +311,25 @@ export default class Query {
 	}
 	
 	static cloneNode(node: Node): Node {
-		var result = new Node();
-		result.name = node.name;
+		var cloned = new Node();
+		cloned.name = node.name;
 		if (this.getIsLeaf(node)) {
-			result.value = node.value;
+			cloned.value = node.value;
 		} else {
-			result.children = [];
+			cloned.children = [];
+			var lastClonedChild: Node;
 			for (var i = 0, n = node.children.length; i < n; i++) {
 				var child = node.children[i];
-				result.children.push(this.cloneNode(child));
+				var clonedChild = this.cloneNode(child);
+				cloned.children.push(clonedChild);
+				if (lastClonedChild) {
+					clonedChild.previousSibling = lastClonedChild;
+					lastClonedChild.nextSibling = clonedChild;
+				}
+				lastClonedChild = clonedChild;
 			}
 		}
-		return result;
+		return cloned;
 	}
 	
 	static getIsLeaf(node: Node): boolean {
