@@ -450,7 +450,10 @@ export default class Query {
 			parent.children = [];
 			parent.value = undefined;
 		}
-		if (!Type.isNumber(index)) index = parent.children.length;
+		if (!Type.isNumber(index)) {
+			index = parent.children.length;
+		}
+		index = Math.max(0, Math.min(parent.children.length, index));
 		
 		child.previousSibling = parent.children[index - 1];
 		child.nextSibling = parent.children[index];
