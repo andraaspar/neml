@@ -6,6 +6,7 @@ import StringUtil from 'illa/StringUtil';
 
 import HtmlHandler from './HtmlHandler';
 import Node from './Node';
+import Query from './Query';
 
 export default class HtmlStringer extends HtmlHandler {
 	
@@ -27,8 +28,23 @@ export default class HtmlStringer extends HtmlHandler {
 	constructor() {
 		super();
 	}
+	
+	stringify(src: Node | Node[] | Query): string {
+		let result = '';
+		if (src instanceof Node) {
+			result += this.stringifyNode(src);
+		} else {
+			if (src instanceof Query) {
+				src = src.getNodes();
+			}
+			for (let i = 0, n = src.length; i < n; i++) {
+				result += this.stringifyNode(src[i]);
+			}
+		}
+		return result;
+	}
 
-	stringify(src: Node, level = -1): string {
+	protected stringifyNode(src: Node, level = -1): string {
 		var result = '';
 		
 		var indent = '';
@@ -104,7 +120,7 @@ export default class HtmlStringer extends HtmlHandler {
 				if (src.children) {
 					for (var i = 0, n = src.children.length; i < n; i++) {
 						var child = src.children[i];
-						result += this.stringify(child, level + 1);
+						result += this.stringifyNode(child, level + 1);
 					}
 				} else {
 					result += this.prepareText(src, indent);
