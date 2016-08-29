@@ -29,22 +29,22 @@ export default class HtmlStringer extends HtmlHandler {
 		super();
 	}
 	
-	stringify(src: Node | Node[] | Query): string {
+	stringify(src: Node | Node[] | Query, level = 0): string {
 		let result = '';
 		if (src instanceof Node) {
-			result += this.stringifyNode(src);
+			result += this.stringifyNode(src, level);
 		} else {
 			if (src instanceof Query) {
 				src = src.getNodes();
 			}
 			for (let i = 0, n = src.length; i < n; i++) {
-				result += this.stringifyNode(src[i]);
+				result += this.stringifyNode(src[i], level);
 			}
 		}
 		return result;
 	}
 
-	protected stringifyNode(src: Node, level = -1): string {
+	protected stringifyNode(src: Node, level = 0): string {
 		var result = '';
 		
 		var indent = '';
@@ -179,47 +179,53 @@ export default class HtmlStringer extends HtmlHandler {
 		return this.prettyPrint;
 	}
 
-	setPrettyPrint(v: boolean): void {
+	setPrettyPrint(v: boolean): this {
 		this.prettyPrint = v;
+		return this;
 	}
 
 	getIndentChar(): string {
 		return this.indentChar;
 	}
 
-	setIndentChar(v: string): void {
+	setIndentChar(v: string): this {
 		this.indentChar = v;
+		return this;
 	}
 
 	getEolChar(): string {
 		return this.eolChar;
 	}
 
-	setEolChar(v: string): void {
+	setEolChar(v: string): this {
 		this.eolChar = v;
+		return this;
 	}
 
 	getTabExpansion(): string {
 		return this.tabExpansion;
 	}
 
-	setTabExpansion(v: string): void {
+	setTabExpansion(v: string): this {
 		this.tabExpansion = v;
+		return this;
 	}
 	
 	getExpandLineBreaks(): boolean {
 		return this.expandLineBreaks;
 	}
 	
-	setExpandLineBreaks(v: boolean): void {
+	setExpandLineBreaks(v: boolean): this {
 		this.expandLineBreaks = v;
+		return this;
 	}
 	
 	getExpandTabs(): boolean {
 		return this.expandTabs;
 	}
 	
-	setExpandTabs(v: boolean): void {
+	setExpandTabs(v: boolean): this {
 		this.expandTabs = v;
+		return this;
 	}
 }

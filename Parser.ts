@@ -115,3 +115,7 @@ export default class Parser extends ReaderBase {
 		return this.linter;
 	}
 }
+
+export function parse(src: string) {
+	return Parser.parse(src);
+}
