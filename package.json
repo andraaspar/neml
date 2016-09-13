@@ -13,7 +13,9 @@
     "url": "https://github.com/andraaspar/neml/issues"
   },
   "homepage": "https://github.com/andraaspar/neml#readme",
-  "dependencies": {},
+  "dependencies": {
+    "illa": "^4.0.2"
+  },
   "devDependencies": {
     "jasmine": "^2.4.1",
     "rimraf": "^2.5.4",

@@ -25,11 +25,11 @@ export default class Parser extends ReaderBase {
 		return this.instance;
 	}
 	
-	static parse(src: string): Node {
+	static parse(src: string): Node[] {
 		return this.getInstance().parse(src);
 	}
 	
-	parse(src: string): Node {
+	parse(src: string): Node[] {
 		this.source = src;
 		
 		this.linter.lint(this.source);
@@ -57,13 +57,11 @@ export default class Parser extends ReaderBase {
 		return commentlessSrc;
 	}
 	
-	protected readNodes(src: string): Node {
-		var rootNode = new Node();
-		rootNode.name = '';
-		rootNode.children = [];
+	protected readNodes(src: string): Node[] {
+		var result: Node[] = [];
 		
 		var splitSrc = src.split(this.getNodeStart());
-		var parentNode = rootNode;
+		var parentNode: Node;
 		var previousNode: Node;
 		
 		for (var i = 1, n = splitSrc.length; i < n; i++) {
@@ -72,9 +70,13 @@ export default class Parser extends ReaderBase {
 			var hasChildren = tailSplit.length == 1;
 			var parentsClosed = tailSplit.length - 2;
 			this.readNodeContent(node, tailSplit[0], hasChildren);
-			parentNode.children.push(node);
-			node.parent = parentNode;
-			if (previousNode) {
+			if (parentNode) {
+				parentNode.children.push(node);
+				node.parent = parentNode;
+			} else {
+				result.push(node);
+			}
+			if (parentNode && previousNode) {
 				previousNode.nextSibling = node;
 				node.previousSibling = previousNode;
 			}
@@ -92,7 +94,7 @@ export default class Parser extends ReaderBase {
 			}
 		}
 		
-		return rootNode;
+		return result;
 	}
 	
 	protected readNodeContent(node: Node, src: string, hasChildren: boolean): void {
@@ -116,6 +118,6 @@ export default class Parser extends ReaderBase {
 	}
 }
 
-export function parse(src: string) {
+export function parse(src: string): Node[] {
 	return Parser.parse(src);
 }

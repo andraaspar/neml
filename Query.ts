@@ -32,7 +32,7 @@ export default class Query {
 	
 	getName(): string {
 		if (this.nodes[0]) {
-			return this.nodes[0].name;
+			return this.nodes[this.nodes.length - 1].name;
 		} else {
 			return undefined;
 		}
@@ -46,7 +46,7 @@ export default class Query {
 	}
 	
 	getValue(): string {
-		return Query.getValue(this.nodes[0]);
+		return Query.getValue(this.nodes[this.nodes.length - 1]);
 	}
 	
 	setValue(value: string): void {
@@ -140,6 +140,19 @@ export default class Query {
 		return new Query(result);
 	}
 	
+	flatten(name?: string, value?: string): Query {
+		var result: Node[] = [];
+		for (var i = 0, n = this.nodes.length; i < n; i++) {
+			var node = this.nodes[i];
+			if (Query.getDoesMatch(node, name, value)) {
+				result.push(node);
+			}
+			result = result.concat(Query.getDescendantNodes(node, name, value));
+		}
+		result = this.removeDoubles(result);
+		return new Query(result);
+	}
+	
 	byIndex(index: number): Query {
 		var node = this.nodes[index];
 		if (node) {
@@ -158,7 +171,7 @@ export default class Query {
 	}
 	
 	root(): Query {
-		var current = this.nodes[0];
+		var current = this.nodes[this.nodes.length - 1];
 		while (current.parent) {
 			current = current.parent;
 		}
@@ -166,7 +179,7 @@ export default class Query {
 	}
 	
 	getParentIndex(): number {
-		return Query.getIndex(this.nodes[0]);
+		return Query.getIndex(this.nodes[this.nodes.length - 1]);
 	}
 	
 	previousAll(name?: string, value?: string, checkFirstOnly?: boolean, isUntil?: boolean): Query {
@@ -271,7 +284,7 @@ export default class Query {
 		return new Query(result);
 	}
 	
-	filter(name: string, value?: string, negate?: boolean): Query {
+	filter(name: string, value?: string, negate = false): Query {
 		var result: Node[] = [];
 		for (var i = 0, n = this.nodes.length; i < n; i++) {
 			var node = this.nodes[i];

@@ -21,12 +21,21 @@ export default class Stringer {
 
 	}
 	
-	static stringify(src: Node): string {
-		return new Stringer().stringifyInternal(src);
+	static stringify(src: Node | Node[]): string {
+		return new Stringer().stringify(src);
 	}
 	
-	stringify(src: Node): string {
-		return this.stringifyInternal(src);
+	stringify(src: Node | Node[]): string {
+		let result = '';
+		if (src instanceof Node) {
+			result += this.stringifyInternal(src);
+		} else {
+			for (let i = 0, n = src.length; i < n; i++) {
+				let node = src[i];
+				result += this.stringifyInternal(node);
+			}
+		}
+		return result;
 	}
 
 	protected stringifyInternal(src: Node, level = -1): string {

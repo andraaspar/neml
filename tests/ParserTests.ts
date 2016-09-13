@@ -4,6 +4,7 @@ import {
 	createLeaf,
 	createNode
 } from './NodeHelpers';
+import Node from '../Node';
 import Parser from '../Parser';
 
 describe('Parser', function() {
@@ -46,13 +47,14 @@ describe('Parser', function() {
 				}).toThrow('1:3: Name end delimiter is missing.');
 			});
 		});
-		describe('invalid pml', function() {
+		describe('invalid neml', function() {
 			it('warns about ignored content', function() {
 				var consoleWarnSpy = spyOn(console, 'warn');
 				
-				var expected = createNode('');
-				createLeaf('foo', '', expected);
-				createLeaf('bar', '', expected);
+				var expected = [
+					createLeaf('foo', ''),
+					createLeaf('bar', '')
+				];
 				
 				var result = Parser.parse('{[|]}[foo|]Ignored[bar|]');
 				
@@ -90,8 +92,8 @@ describe('Parser', function() {
 				}).toThrow('1:6: Invalid location for node end delimiter.');
 			});
 		});
-		describe('valid pml', function() {
-			it('parses pml', function() {
+		describe('valid neml', function() {
+			it('parses neml', function() {
 				var result = Parser.parse(`«◄•►»
 ◄Árvíztűrő tükörfúrógép•Flood-resistant mirror drill►
 ◄•►
@@ -106,10 +108,12 @@ describe('Parser', function() {
 	◄leaf-3•C►
 ►
 `);
-				var expected = createNode('');
-				createLeaf('Árvíztűrő tükörfúrógép', 'Flood-resistant mirror drill', expected);
-				createLeaf('', '', expected);
-				var root = createNode('root', expected);
+				var root: Node;
+				var expected = [
+					createLeaf('Árvíztűrő tükörfúrógép', 'Flood-resistant mirror drill'),
+					createLeaf('', ''),
+					root = createNode('root')
+				];
 				createLeaf('leaf-1', 'A', root);
 				var leaf2 = createNode('leaf-2', root);
 				createLeaf('', 'B', leaf2);
